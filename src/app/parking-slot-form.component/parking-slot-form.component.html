@@ -1,0 +1,86 @@
+<!-- MORE INFORMATION ABOUT THIS FORM HERE: https://getbootstrap.com/docs/5.3/forms/validation/ -->
+<form class="row g-3 " #form="ngForm" (ngSubmit)="sendVehicle(form)">
+  <div class="col-12">
+    <h2>Nuevo Ingreso</h2>
+  </div>
+  <div class="col-12">
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" id="newDomainCheck" [(ngModel)]="vehicle.isNewDomain" name="isNewDomain" />
+      <label class="form-check-label" for="newDomainCheck">
+        Nuevo dominio?
+      </label>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <label for="inputModel" class="form-label">Modelo</label>
+    <input #model="ngModel" type="text" class="form-control" id="inputModel" [(ngModel)]="vehicle.model" name="model" minlength="3" required 
+    [ngClass]="{'is-valid': model.valid && (model.dirty || model.touched), 'is-invalid': model.invalid && (model.dirty || model.touched)}"/>
+    @if (model.invalid && (model.dirty || model.touched)) {
+      @if (model.getError('required')) {
+        <div class="invalid-feedback">Este campo es requerido.</div>
+      } @else {
+        <div class="invalid-feedback">El modelo debe tener al menos 3 caracteres.</div>
+      }
+    }
+  </div>
+
+  <div class="col-md-4">
+    <label for="inputDomain" class="form-label">Dominio</label>
+    <input #domain="ngModel" type="text" class="form-control" id="inputDomain" [(ngModel)]="vehicle.domain" name="domain" required [minlength]="vehicle.isNewDomain ? 7 : 6" [maxlength]="vehicle.isNewDomain ? 7 : 6" 
+    [ngClass]="{'is-valid': domain.valid && (domain.dirty || domain.touched), 'is-invalid': domain.invalid && (domain.dirty || domain.touched)}" />
+    @if (domain.invalid && (domain.dirty || domain.touched)) {
+      @if (domain.getError('required')) {
+        <div class="invalid-feedback">Este campo es requerido.</div>
+      } @else {
+        <div class="invalid-feedback">El dominio debe tener {{ vehicle.isNewDomain ? 7 : 6 }} caracteres.</div>
+      }
+    }
+  </div>
+
+  <div class="col-md-6">
+    <label for="checkInInputTime" class="form-label">Ingreso</label>
+    <input #checkInTime="ngModel" type="time" class="form-control" id="checkInInputTime" [(ngModel)]="vehicle.checkInTime" name="checkInTime" required 
+      [ngClass]="{'is-valid': checkInTime.valid && (checkInTime.dirty || checkInTime.touched), 'is-invalid': checkInTime.invalid && (checkInTime.dirty || checkInTime.touched)}"/>
+    @if (checkInTime.invalid && (checkInTime.dirty || checkInTime.touched)) {
+      @if (checkInTime.getError('required')) {
+        <div class="invalid-feedback">La hora de ingreso es requerida.</div>
+      }
+    }
+  </div>
+
+  <div class="col-md-3">
+    <label for="brandSelect" class="form-label">Marca</label>
+    <select #brand="ngModel" class="form-select" id="brandSelect" [(ngModel)]="vehicle.brand" name="brand" required #brandInput="ngModel"
+    [ngClass]="{'is-valid': brand.valid && (brand.dirty || brand.touched), 'is-invalid': brand.invalid && (brand.dirty || brand.touched)}">
+    <option [ngValue]="-1" disabled selected>Seleccione una marca</option>    
+    @for (brand of brands; track brand.id) {
+        <option [ngValue]="brand">{{brand.name}}</option>
+      }
+    </select>
+    @if (brand.invalid && (brand.dirty || brand.touched)) {
+      @if (brand.getError('required')) {
+        <div class="invalid-feedback">Seleccione una marca.</div>
+      }
+    }
+  </div>
+
+  <div class="col-md-3">
+    <label for="vehiculeTypeTypeSelect" class="form-label">Tipo Vehiculo</label>
+    <select #vehicleType="ngModel" class="form-select" id="vehiculeTypeSelect" [(ngModel)]="vehicle.vehicleType" name="vehicleType" required
+    [ngClass]="{'is-valid': vehicleType.valid && (vehicleType.dirty || vehicleType.touched), 'is-invalid': vehicleType.invalid && (vehicleType.dirty || vehicleType.touched)}">
+    <option [ngValue]="-1" disabled selected>Seleccione un tipo de vehiculo</option> 
+    @for (type of vehiculeTypes; track $index) {
+        <option [ngValue]="type.id">{{type.name}}</option>
+      }
+    </select>
+    @if (vehicleType.invalid && (vehicleType.dirty || vehicleType.touched)) {
+      @if (vehicleType.getError('required')) {
+        <div class="invalid-feedback">Seleccione un tipo de vehiculo.</div>
+      }
+    }
+  </div>
+  <div class="col-12">
+    <button class="btn btn-secondary" type="button" (click)="cancel()">Cancelar</button>
+    <button class="btn btn-primary" type="submit"  [disabled]="!form.valid" >Registrar ingreso</button>
+  </div>
+</form>

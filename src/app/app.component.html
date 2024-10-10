@@ -1,0 +1,5 @@
+@if (!viewForm) {
+    <app-parking-lot [vehicles]="vehicles" (showForm)="showForm()"></app-parking-lot>
+} @else {
+    <app-parking-slot-form (closeForm)="hideForm()" (vehicleRegistered)="onVehicleRegistered($event)"></app-parking-slot-form>
+}

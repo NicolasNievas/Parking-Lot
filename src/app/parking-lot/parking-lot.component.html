@@ -1,0 +1,21 @@
+<div class="container">
+    <button class="mb-3 btn-primary btn" (click)="newVehicle()">Nuevo Ingreso</button>
+    <div class="row g-2">
+        <div class="col-12">
+            <div class="row row-cols-6" >
+                @for (lot of parkingLot; track $index) {
+                    <div class="col">
+                        <div class="border p-2" [ngClass]="{'bg-success': lot.availablePlaces > 0, 'bg-danger': lot.availablePlaces === 0}">
+                            @for (item of lot.vehicules; track $index) {
+                                <i [ngClass]="getVehicleIcon(item)" class="bi"></i>
+                            }
+                            @for (item of getEmptySpaces(lot); track $index) {
+                                <i class="bi bi-dot"></i>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
